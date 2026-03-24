@@ -40,11 +40,15 @@ class PlotHandler:
         self.particles = []  # List to store particle positions
         self.colors = []     # List to store particle colors
         self.sizes = []      # List to store particle sizes
+        self._pygame_was_init = pg.get_init()
+        self._font_was_init = pg.font.get_init()
 
         try:
             # Initialize pygame
-            pg.init()
-            pg.font.init()
+            if not self._pygame_was_init:
+                pg.init()
+            if not self._font_was_init:
+                pg.font.init()
 
             # Set up dimensions for output image
             self.width = width
@@ -78,10 +82,10 @@ class PlotHandler:
             # Set available flag
             self.available = True
 
-            print(f"Plot handler initialized with dimensions: {self.width}x{self.height}")
+            print(f"Модуль построения графика инициализирован с размером: {self.width}x{self.height}")
 
         except Exception as e:
-            print(f"Error initializing PlotHandler: {e}")
+            print(f"Ошибка инициализации PlotHandler: {e}")
             self.available = False
 
     def draw_axes(self):
@@ -97,6 +101,10 @@ class PlotHandler:
         # Draw border rectangle for the plot area
         rect = pg.Rect(self.margin, self.margin, self.plot_width, self.plot_height)
         pg.draw.rect(self.screen, self.axis_color, rect, 1)
+
+        # Заголовок графика
+        title = self.title_font.render("Пылевой хвост кометы: распределение частиц", True, self.text_color)
+        self.screen.blit(title, (self.width // 2 - title.get_width() // 2, 20))
 
         # X-axis major ticks and labels
         x_ticks = np.linspace(self.nmin, self.nmax, 9)
@@ -149,12 +157,12 @@ class PlotHandler:
                         (self.width - self.margin, y_pos), 1)
 
         # X-axis label
-        x_label = self.label_font.render("Projected distance on RA axis [km]", True, self.text_color)
+        x_label = self.label_font.render("Проекция расстояния по оси RA [км]", True, self.text_color)
         self.screen.blit(x_label, (self.width//2 - x_label.get_width()//2,
                                  self.height - self.margin//2))
 
         # Y-axis label (rotated text not directly supported in Pygame, so we'll position it)
-        y_label = self.label_font.render("Projected distance on DEC axis [km]", True, self.text_color)
+        y_label = self.label_font.render("Проекция расстояния по оси DEC [км]", True, self.text_color)
 
         # Create a new surface to rotate the text
         y_label_rotated = pg.Surface((y_label.get_height(), y_label.get_width()), pg.SRCALPHA)
@@ -215,7 +223,7 @@ class PlotHandler:
         pg.draw.line(self.screen, (255, 0, 0), (int(nx), int(ny-7)), (int(nx), int(ny+7)), 1)
 
         # Label
-        text = self.small_font.render("Nucleus", True, (255, 0, 0))
+        text = self.small_font.render("Ядро", True, (255, 0, 0))
         self.screen.blit(text, (int(nx) + 10, int(ny) - 10))
 
         return True
@@ -248,10 +256,10 @@ class PlotHandler:
         # Save the image
         try:
             pg.image.save(self.screen, output_file)
-            print(f"Saved particle plot to {output_file}")
+            print(f"График частиц сохранён в {output_file}")
             return True
         except Exception as e:
-            print(f"Error saving image: {e}")
+            print(f"Ошибка сохранения изображения: {e}")
             return False
 
     def add_particle(self, npar, mpar, color=None, size=1):
@@ -285,10 +293,11 @@ class PlotHandler:
             bool: True if successful, False otherwise
         """
         if self.available:
-            pg.quit()
+            if not self._font_was_init and pg.font.get_init():
+                pg.font.quit()
+            if not self._pygame_was_init and pg.get_init():
+                pg.quit()
             self.available = False
             return True
 
         return False
-
-

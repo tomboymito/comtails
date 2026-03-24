@@ -58,6 +58,15 @@ class SimulationController:
         self._init_components(config_files)
 
         # Process simulation steps
+        calculation_steps = [
+            "Формирование временной сетки моделирования",
+            "Получение эфемерид и орбитальных элементов (JPL Horizons)",
+            "Построение сетки изображения и геометрии наблюдений",
+            "Загрузка и обработка звёздного поля (Gaia EDR3)",
+            "Монте-Карло расчёт пылевого хвоста",
+            "Фотометрический расчёт Afρ и видимой звёздной величины",
+            "Запись FITS-продуктов и выходных файлов"
+        ]
         self._setup_time_array()
         self._fetch_comet_coordinates()
         self._setup_image_grid()
@@ -68,11 +77,12 @@ class SimulationController:
 
         # Write results
         results = self._write_results()
+        results["calculation_steps"] = calculation_steps
 
         # End CPU timer
         self.end_time = time.time()
         elapsed_minutes = (self.end_time - self.start_time) / 60.0
-        print(f" Elapsed CPU time: {elapsed_minutes:12.5f} minutes")
+        print(f" Затраченное CPU-время: {elapsed_minutes:12.5f} мин")
 
         return results
 
@@ -103,7 +113,7 @@ class SimulationController:
 
     def _fetch_comet_coordinates(self):
         """Fetch comet coordinates and orbital elements from JPL Horizons."""
-        print("Downloading ephemeris from JPL-Horizons...")
+        print("Загрузка эфемерид из JPL-Horizons...")
 
         # Get Earth position
         earth_data = self.horizons_client.get_earth_position(self.config.end_jd)
@@ -161,7 +171,7 @@ class SimulationController:
     def _build_dust_tail(self):
         """Build the dust tail through Monte Carlo simulation."""
         # Fixed formatting to match expected output
-        print("Building up dust tail ...")
+        print("Построение пылевого хвоста ...")
         self.dust_tail.build(
             self.comet,
             self.config,
@@ -169,7 +179,7 @@ class SimulationController:
         )
 
         # Add the missing output line for total dust mass
-        print(f"  Total dust mass ejected= {self.dust_tail.total_mass:.3E} kg")
+        print(f"  Суммарно выброшенная масса пыли = {self.dust_tail.total_mass:.3E} кг")
 
     def _finalize_image(self):
         """Finalize the dust tail image and apply effects."""
@@ -189,8 +199,8 @@ class SimulationController:
         # Add star field to total flux
         star_flux_sum = np.sum(self.config.flux_star)
         print(
-            f"Star field contains {np.count_nonzero(self.config.flux_star)} non-zero pixels, max flux: {np.max(self.config.flux_star)}")
-        print(f"Adding total star flux: {star_flux_sum}")
+            f"Звёздное поле: {np.count_nonzero(self.config.flux_star)} ненулевых пикселей, максимальный поток: {np.max(self.config.flux_star)}")
+        print(f"Добавление суммарного звёздного потока: {star_flux_sum}")
         self.config.flux += self.config.flux_star
 
         # Apply convolution if requested
@@ -214,7 +224,7 @@ class SimulationController:
         )
 
         # Fixed formatting to match expected output
-        print(f"  Aperture(km)= {self.config.rho_ap:10.2f} Afrho(m)= {afrho:8.3f} Mag= {mag:8.3f}")
+        print(f"  Радиус апертуры (км)= {self.config.rho_ap:10.2f} Afρ (м)= {afrho:8.3f} m_R= {mag:8.3f}")
 
         # Write output files
         self.fits_writer.write_fits_image(
@@ -254,7 +264,7 @@ class SimulationController:
         if self.config.igrapho == 1 and self.plot_handler and self.plot_handler.available:
             self.plot_handler.save_image()
             self.plot_handler.close()
-            print("Particle plot generated successfully")
+            print("График частиц успешно сформирован")
 
         # Write Afrho to file
         with open("output/afrho.dat", "a") as f:
@@ -312,12 +322,12 @@ class SimulationController:
             mag_diff = abs(mag - expected_mag) / expected_mag
 
             if afrho_diff > tolerance or mag_diff > tolerance:
-                print(f"Validation failed: Afrho={afrho} (expected {expected_afrho}), "
-                      f"Mag={mag} (expected {expected_mag})")
+                print(f"Проверка не пройдена: Afρ={afrho} (ожидалось {expected_afrho}), "
+                      f"m_R={mag} (ожидалось {expected_mag})")
                 return False
             else:
-                print(f"Validation passed: Afrho={afrho}, Mag={mag}")
+                print(f"Проверка пройдена: Afρ={afrho}, m_R={mag}")
                 return True
         except Exception as e:
-            print(f"Validation error: {e}")
+            print(f"Ошибка проверки: {e}")
             return False

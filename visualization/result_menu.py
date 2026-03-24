@@ -84,9 +84,14 @@ def save_result_photo(results: Dict[str, Any], output_file: str,
     """
     Создать итоговое PNG-изображение с меню вычислений и основными результатами.
     """
+    pygame_was_init = pg.get_init()
+    font_was_init = pg.font.get_init()
+
     try:
-        pg.init()
-        pg.font.init()
+        if not pygame_was_init:
+            pg.init()
+        if not font_was_init:
+            pg.font.init()
 
         surface = _build_result_surface(results, particle_plot_file=particle_plot_file)
 
@@ -98,7 +103,10 @@ def save_result_photo(results: Dict[str, Any], output_file: str,
         print(f"Не удалось создать итоговое изображение результата: {e}")
         return False
     finally:
-        pg.quit()
+        if not font_was_init and pg.font.get_init():
+            pg.font.quit()
+        if not pygame_was_init and pg.get_init():
+            pg.quit()
 
 
 def show_result_menu_window(results: Dict[str, Any],
@@ -106,9 +114,14 @@ def show_result_menu_window(results: Dict[str, Any],
     """
     Открыть графическое окно с итоговой «менюшкой» результатов.
     """
+    pygame_was_init = pg.get_init()
+    font_was_init = pg.font.get_init()
+
     try:
-        pg.init()
-        pg.font.init()
+        if not pygame_was_init:
+            pg.init()
+        if not font_was_init:
+            pg.font.init()
 
         width, height = 1400, 900
         screen = pg.display.set_mode((width, height))
@@ -133,4 +146,7 @@ def show_result_menu_window(results: Dict[str, Any],
         print(f"Не удалось открыть графическое окно меню результатов: {e}")
         return False
     finally:
-        pg.quit()
+        if not font_was_init and pg.font.get_init():
+            pg.font.quit()
+        if not pygame_was_init and pg.get_init():
+            pg.quit()

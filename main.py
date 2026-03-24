@@ -12,35 +12,38 @@ import argparse
 from simulation import SimulationController
 from utils.version import print_version_info, print_citation_info
 from utils.io_utils import reset_directory
+from visualization.result_menu import print_result_menu, save_result_photo
 
 
 def parse_arguments():
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description='COMTAILS Comet Dust Tail Simulation')
+    parser = argparse.ArgumentParser(description='COMTAILS — моделирование пылевого хвоста кометы')
 
     parser.add_argument('--input-dir', type=str, default='input',
-                        help='Directory containing input files')
+                        help='Каталог со входными файлами')
 
     parser.add_argument('--output-dir', type=str, default='output',
-                        help='Directory for output files')
+                        help='Каталог для выходных файлов')
 
     parser.add_argument('--config', type=str, default='TAIL_INPUTS.dat',
-                        help='Main configuration file name')
+                        help='Имя основного конфигурационного файла')
 
     parser.add_argument('--dust-profile', type=str, default='dmdt_vel_power_rmin_rmax.dat',
-                        help='Dust loss rate profile file name')
+                        help='Имя файла профиля пылепотерь')
 
     parser.add_argument('--validate', action='store_true',
-                        help='Validate results against expected values')
+                        help='Проверить результаты относительно ожидаемых значений')
 
     parser.add_argument('--expected-afrho', type=float, default=10.5,
-                        help='Expected Afrho value for validation')
+                        help='Ожидаемое значение Afρ для проверки')
 
     parser.add_argument('--expected-mag', type=float, default=8.07,
-                        help='Expected magnitude for validation')
+                        help='Ожидаемая звёздная величина для проверки')
 
     parser.add_argument('--tolerance', type=float, default=0.1,
-                        help='Validation tolerance (relative difference)')
+                        help='Допуск проверки (относительное отклонение)')
+    parser.add_argument('--no-menu', action='store_true',
+                        help='Не выводить итоговое меню вычислений')
 
     return parser.parse_args()
 
@@ -59,7 +62,7 @@ def main():
 
     for file in required_files:
         if not os.path.exists(file):
-            print(f"Error: Required input file '{file}' not found.")
+            print(f"Ошибка: обязательный входной файл '{file}' не найден.")
             sys.exit(1)
 
     # Print version information
@@ -70,7 +73,15 @@ def main():
 
     # Create and run simulation
     simulation = SimulationController()
-    simulation.run(required_files)
+    results = simulation.run(required_files)
+
+    if not args.no_menu:
+        print_result_menu(results)
+        save_result_photo(
+            results,
+            os.path.join(args.output_dir, "итог_расчета.png"),
+            os.path.join(args.output_dir, "dust_particles.png")
+        )
 
     # Validate results if requested
     if args.validate:
@@ -82,7 +93,7 @@ def main():
         )
 
         if not validation_result:
-            print("Validation failed!")
+            print("Проверка не пройдена!")
             sys.exit(1)
 
     # Print version information again

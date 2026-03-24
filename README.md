@@ -67,6 +67,14 @@ python main.py --input-dir custom_inputs --config my_config.dat --dust-profile m
 python main.py --no-menu
 ```
 
+Чтобы открыть именно графическое окно с меню результатов (GUI-окно pygame):
+
+```bash
+python main.py --open-menu-window
+```
+
+Окно закрывается кнопкой закрытия или клавишами `Esc` / `Enter`.
+
 ## Конфигурационные файлы
 
 COMTAILS использует два основных входных файла:

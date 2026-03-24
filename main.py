@@ -12,7 +12,7 @@ import argparse
 from simulation import SimulationController
 from utils.version import print_version_info, print_citation_info
 from utils.io_utils import reset_directory
-from visualization.result_menu import print_result_menu, save_result_photo
+from visualization.result_menu import print_result_menu, save_result_photo, show_result_menu_window
 
 
 def parse_arguments():
@@ -44,6 +44,8 @@ def parse_arguments():
                         help='Допуск проверки (относительное отклонение)')
     parser.add_argument('--no-menu', action='store_true',
                         help='Не выводить итоговое меню вычислений')
+    parser.add_argument('--open-menu-window', action='store_true',
+                        help='Открыть графическое окно с итоговой менюшкой результатов')
 
     return parser.parse_args()
 
@@ -82,6 +84,11 @@ def main():
             os.path.join(args.output_dir, "итог_расчета.png"),
             os.path.join(args.output_dir, "dust_particles.png")
         )
+        if args.open_menu_window:
+            show_result_menu_window(
+                results,
+                os.path.join(args.output_dir, "dust_particles.png")
+            )
 
     # Validate results if requested
     if args.validate:

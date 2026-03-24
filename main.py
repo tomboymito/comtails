@@ -5,14 +5,11 @@ This module provides the entry point for running the comet dust tail simulation.
 It uses the refactored object-oriented design to improve upon the original
 COMTAILS.for Fortran 77 code by Fernando Moreno IAA-CSIC.
 """
-import os
 import sys
 import argparse
 
-from simulation import SimulationController
-from utils.version import print_version_info, print_citation_info
-from utils.io_utils import reset_directory
-from visualization.result_menu import print_result_menu, save_result_photo, show_result_menu_window
+from app_runner import run_simulation_pipeline
+from visualization.gui_launcher import ComtailsGUI
 
 
 def parse_arguments():
@@ -46,66 +43,25 @@ def parse_arguments():
                         help='Не выводить итоговое меню вычислений')
     parser.add_argument('--open-menu-window', action='store_true',
                         help='Открыть графическое окно с итоговой менюшкой результатов')
+    parser.add_argument('--cli', action='store_true',
+                        help='Запуск без GUI-окна (только консольный режим)')
 
     return parser.parse_args()
 
 
 def main():
-    """Run the COMTAILS simulation."""
-    # Parse command line arguments
+    """Run COMTAILS in GUI (default) or CLI mode."""
     args = parse_arguments()
 
-    # Check for required input files
-    input_dir = args.input_dir
-    required_files = [
-        os.path.join(input_dir, args.config),
-        os.path.join(input_dir, args.dust_profile)
-    ]
-
-    for file in required_files:
-        if not os.path.exists(file):
-            print(f"Ошибка: обязательный входной файл '{file}' не найден.")
+    if args.cli:
+        try:
+            run_simulation_pipeline(args)
+        except Exception as e:
+            print(f"Ошибка запуска в CLI-режиме: {e}")
             sys.exit(1)
-
-    # Print version information
-    print_version_info()
-
-    # Create output directory
-    reset_directory(args.output_dir)
-
-    # Create and run simulation
-    simulation = SimulationController()
-    results = simulation.run(required_files)
-
-    if not args.no_menu:
-        print_result_menu(results)
-        save_result_photo(
-            results,
-            os.path.join(args.output_dir, "итог_расчета.png"),
-            os.path.join(args.output_dir, "dust_particles.png")
-        )
-        if args.open_menu_window:
-            show_result_menu_window(
-                results,
-                os.path.join(args.output_dir, "dust_particles.png")
-            )
-
-    # Validate results if requested
-    if args.validate:
-        validation_result = SimulationController.validate_results(
-            os.path.join(args.output_dir, "afrho.dat"),
-            args.expected_afrho,
-            args.expected_mag,
-            args.tolerance
-        )
-
-        if not validation_result:
-            print("Проверка не пройдена!")
-            sys.exit(1)
-
-    # Print version information again
-    print_version_info()
-    print_citation_info()
+    else:
+        gui = ComtailsGUI(args)
+        gui.run()
 
 
 if __name__ == "__main__":

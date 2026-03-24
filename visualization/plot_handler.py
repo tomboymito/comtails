@@ -40,11 +40,15 @@ class PlotHandler:
         self.particles = []  # List to store particle positions
         self.colors = []     # List to store particle colors
         self.sizes = []      # List to store particle sizes
+        self._pygame_was_init = pg.get_init()
+        self._font_was_init = pg.font.get_init()
 
         try:
             # Initialize pygame
-            pg.init()
-            pg.font.init()
+            if not self._pygame_was_init:
+                pg.init()
+            if not self._font_was_init:
+                pg.font.init()
 
             # Set up dimensions for output image
             self.width = width
@@ -289,9 +293,11 @@ class PlotHandler:
             bool: True if successful, False otherwise
         """
         if self.available:
-            pg.quit()
+            if not self._font_was_init and pg.font.get_init():
+                pg.font.quit()
+            if not self._pygame_was_init and pg.get_init():
+                pg.quit()
             self.available = False
             return True
 
         return False
-

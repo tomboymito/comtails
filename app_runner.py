@@ -1,6 +1,8 @@
 """
 Общий запуск пайплайна COMTAILS для CLI и GUI.
 """
+from __future__ import annotations
+
 import os
 from typing import Callable, Dict, Any, Tuple
 

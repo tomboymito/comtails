@@ -22,5 +22,5 @@
 0,4.            ! Convolution (YES=1), FWHM of "seeing" (px)
 0,17            ! Background star field (1=Yes, 0=No), Limiting magnitude
 0               ! If IPRN=1 code gives particle positions in the sky, file nm.dat
-1,0.9           ! If IGRAPHO=1, generates a pnf file with
+0,0.9           ! If IGRAPHO=1, generates a pnf file with
                 ! certain percent of particles

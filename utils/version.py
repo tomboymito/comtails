@@ -9,7 +9,7 @@ the application to provide consistent version reporting.
 # Version information
 VERSION = "1.0.0"
 VERSION_DATE = "2025 May 05"
-BUILD_INFO = f"COMTAILS — моделирование пылевого хвоста кометы v{VERSION} ({VERSION_DATE})"
+BUILD_INFO = f"COMTAILS - Comet Dust Tail Simulation v{VERSION} ({VERSION_DATE})"
 
 
 def print_version_info():
@@ -28,7 +28,7 @@ def print_citation_info():
         "Moreno, F. (2025). COMetary dust TAIL Simulator (COMTAILS): A computer code to generate comet dust tail \n brightness images. Astronomy and Astrophysics, Volume:695(2025), Article:A263."
     )
 
-    print("\nИнформация для цитирования:")
+    print("\nCitation Information:")
     print("-" * 20)
     print(citation)
     print("-" * 20)

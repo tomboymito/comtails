@@ -16,10 +16,10 @@ def reset_directory(dir_path):
     # Remove the directory if it exists
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
-        print(f"Удалён существующий каталог: {dir_path}")
+        print(f"Deleted existing directory: {dir_path}")
 
     # Create the directory again
     os.makedirs(dir_path)
-    print(f"Создан каталог: {dir_path}")
+    print(f"Created directory: {dir_path}")
 
 

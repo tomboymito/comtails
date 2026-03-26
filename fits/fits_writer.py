@@ -61,4 +61,4 @@ class FitsWriter:
 
         # Write to disk
         hdu.writeto(outimage, overwrite=True)
-        print(f"Записан FITS-файл: {outimage}")
+        print(f"Wrote FITS file: {outimage}")

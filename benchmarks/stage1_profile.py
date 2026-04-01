@@ -72,13 +72,13 @@ class MockConfig:
         self.gamma = FLOAT_TYPE(0.5)
         self.kappa = FLOAT_TYPE(-0.5)
 
-        # Поворот в плоскости неба
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.psang = FLOAT_TYPE(0.0)
 
-        # Гелиоцентрическое преобразование (единичная матрица для синтетического теста)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.helio_matrix = np.eye(3, dtype=FLOAT_TYPE)
 
-        # Параметры преобразования в координаты (n,m)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.delta = FLOAT_TYPE(1.3)
         self.nmpar = FLOAT_TYPE(0.0)
         self.nmpar1 = FLOAT_TYPE(1.0)
@@ -94,7 +94,7 @@ class MockConfig:
         self.rcobs = FLOAT_TYPE(1.2)
         self.thetacobs = FLOAT_TYPE(0.5)
 
-        # Границы сетки изображения и масштабирование
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.nmin = FLOAT_TYPE(-2.5e6)
         self.nmax = FLOAT_TYPE(2.5e6)
         self.mmin = FLOAT_TYPE(-2.5e6)

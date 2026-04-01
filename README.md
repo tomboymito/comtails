@@ -47,6 +47,7 @@ python benchmarks/stage1_profile.py
 Нативный CPU baseline находится в `comtails_core/`:
 
 - `comtails_core/README.md`
+- `docs/how_to_run_cpp_ru.md`
 
 В текущей реализации есть:
 
@@ -66,6 +67,12 @@ python benchmarks/stage1_profile.py
 
 ```bash
 ./scripts/verify_project.sh
+```
+
+Полный запуск именно C++-конвейера:
+
+```bash
+./scripts/run_cpp_pipeline.sh
 ```
 
 ## Авторы и вклад

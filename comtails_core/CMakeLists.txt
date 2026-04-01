@@ -31,3 +31,8 @@ target_link_libraries(comtails_core_bench_parity_dataset PRIVATE comtails_core)
 add_executable(comtails_core_check_parity_regression
     tools/check_parity_regression.cpp
 )
+
+add_executable(comtails_core_run_synthetic_tail
+    tools/run_synthetic_tail.cpp
+)
+target_link_libraries(comtails_core_run_synthetic_tail PRIVATE comtails_core)

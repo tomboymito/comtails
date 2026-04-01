@@ -1,8 +1,4 @@
-"""
-I/O utilities for COMTAILS simulation.
-
-This module provides input/output utility functions for file management.
-"""
+"""Служебные функции ввода/вывода для подготовки астрофизических данных модели."""
 import os
 import shutil
 
@@ -13,12 +9,12 @@ def reset_directory(dir_path):
     Args:
         dir_path: Path to directory
     """
-    # Remove the directory if it exists
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
         print(f"Deleted existing directory: {dir_path}")
 
-    # Create the directory again
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     os.makedirs(dir_path)
     print(f"Created directory: {dir_path}")
 

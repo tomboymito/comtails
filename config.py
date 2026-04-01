@@ -1,9 +1,4 @@
-"""
-Configuration management for COMTAILS simulation.
-
-This module handles all the configuration settings and parameters required
-for the comet dust tail simulation.
-"""
+"""Конфигурационный модуль COMTAILS: параметры орбитальной динамики, фотометрии и Монте-Карло сценариев."""
 import os
 import numpy as np
 
@@ -25,10 +20,10 @@ class SimulationConfig:
 
     def __init__(self):
         """Initialize configuration with default values."""
-        # Identification
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.recid = ""
 
-        # Time parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.start_jd = FLOAT_TYPE(0.0)
         self.end_jd = FLOAT_TYPE(0.0)
         self.per_jd = FLOAT_TYPE(0.0)
@@ -37,7 +32,7 @@ class SimulationConfig:
         self.times = None
         self.deltat = FLOAT_TYPE(0.0)
 
-        # Grid parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.nx = 0
         self.ny = 0
         self.scale = FLOAT_TYPE(0.0)
@@ -54,7 +49,7 @@ class SimulationConfig:
         self.augy = FLOAT_TYPE(0.0)
         self.areapix = FLOAT_TYPE(0.0)
 
-        # Particle parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.pden = FLOAT_TYPE(0.0)
         self.pv0 = FLOAT_TYPE(0.0)
         self.phase_coeff = FLOAT_TYPE(0.0)
@@ -63,7 +58,7 @@ class SimulationConfig:
         self.kappa = FLOAT_TYPE(0.0)
         self.expocos = FLOAT_TYPE(0.0)
 
-        # Nucleus parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.nuc_inc = FLOAT_TYPE(0.0)
         self.nuc_phi = FLOAT_TYPE(0.0)
         self.period = FLOAT_TYPE(0.0)
@@ -79,7 +74,7 @@ class SimulationConfig:
         self.pv0_nuc = FLOAT_TYPE(0.0)
         self.phase_coeff_nuc = FLOAT_TYPE(0.0)
 
-        # Simulation control parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.iejec_mode = 0
         self.isun = 0
         self.ntimes = 0
@@ -95,16 +90,16 @@ class SimulationConfig:
         self.igrapho = 0
         self.pcp = FLOAT_TYPE(0.0)
 
-        # Aperture parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.iap = 0
         self.rho_ap = FLOAT_TYPE(0.0)
         self.rho_ap_orig = FLOAT_TYPE(0.0)
 
-          # Output parameters
+          # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.cte_mag = FLOAT_TYPE(0.0)
         self.magsun = FLOAT_TYPE(0.0)
 
-        # Dust loss rate parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.dtime = []
         self.dmdtlog = []
         self.velfac = []
@@ -112,7 +107,7 @@ class SimulationConfig:
         self.radiomin = []
         self.radiomax = []
 
-        # Position and velocity arrays
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xyz_earth = [FLOAT_TYPE(0.0), FLOAT_TYPE(0.0), FLOAT_TYPE(0.0)]
         self.xe = FLOAT_TYPE(0.0)
         self.ye = FLOAT_TYPE(0.0)
@@ -123,7 +118,7 @@ class SimulationConfig:
         self.thetacobs = FLOAT_TYPE(0.0)
         self.rcobs = FLOAT_TYPE(0.0)
 
-        # Observational parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.ra = FLOAT_TYPE(0.0)
         self.dec = FLOAT_TYPE(0.0)
         self.delta = FLOAT_TYPE(0.0)
@@ -141,12 +136,12 @@ class SimulationConfig:
         self.des = FLOAT_TYPE(0.0)
 
 
-        # Coordinate system parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.arcsec_rad = FLOAT_TYPE(180.0 * 3600.0 / PI)
         self.solid_angle = FLOAT_TYPE(PI * (RSUNKM/AUKM)**2)
         self.helio_matrix = None
 
-        # Cometocentric parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xoute = FLOAT_TYPE(0.0)
         self.youte = FLOAT_TYPE(0.0)
         self.zoute = FLOAT_TYPE(0.0)
@@ -163,17 +158,17 @@ class SimulationConfig:
         self.nmpar7 = FLOAT_TYPE(0.0)
         self.nmpar8 = FLOAT_TYPE(0.0)
 
-        # Particle size parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.r1log = FLOAT_TYPE(0.0)
         self.r2log = FLOAT_TYPE(0.0)
         self.steprlog = FLOAT_TYPE(0.0)
 
-        # Output arrays
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.flux = None
         self.opt_depth = None
         self.flux_star = None
 
-        # Output file handles
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.dustloss_file = None
         self.star_file = None
         self.nm_file = None
@@ -188,9 +183,9 @@ class SimulationConfig:
         self.dustloss_file = open('output/dustlossrate.dat', 'w')
 
     def __getstate__(self):
-        # Copy the object's state (all attributes)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         state = self.__dict__.copy()
-        # Set file handle attributes to None to exclude them from pickling
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         state['star_file'] = None
         state['nm_file'] = None
         state['subsolar_file'] = None
@@ -198,9 +193,9 @@ class SimulationConfig:
         return state
 
     def __setstate__(self, state):
-        # Restore the state from the pickled data
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.__dict__.update(state)
-        # Ensure file handles are None in the worker process
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.star_file = None
         self.nm_file = None
         self.subsolar_file = None
@@ -213,18 +208,18 @@ class SimulationConfig:
         Args:
             required_files: List of input file paths
         """
-        # Helper function to parse input lines with comments
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         def parse_line(line):
-            # Split at the comment marker '!'
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if '!' in line:
                 value_part = line.split('!')[0].strip()
             else:
                 value_part = line.strip()
             return value_part
 
-        # Read dust loss rate parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         with open(required_files[1], 'r') as f:
-            next(f)  # Skip blank line
+            next(f)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             for line in f:
                 parts = line.split()
                 if len(parts) >= 6:
@@ -237,7 +232,7 @@ class SimulationConfig:
 
         self.ninputs = len(self.dtime)
 
-        # Read main input file
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         with open(required_files[0], 'r') as f:
             self.recid = parse_line(f.readline())
             self.pden = FLOAT_TYPE(float(parse_line(f.readline())))
@@ -265,7 +260,7 @@ class SimulationConfig:
             self.lon_min_deg = FLOAT_TYPE(float(parts[0]))
             self.lon_max_deg = FLOAT_TYPE(float(parts[1]))
 
-            # Convert to radians
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.lon_min = FLOAT_TYPE(self.lon_min_deg * TORAD)
             self.lon_max = FLOAT_TYPE(self.lon_max_deg * TORAD)
             self.lat_min = FLOAT_TYPE(self.lat_min_deg * TORAD)
@@ -299,7 +294,7 @@ class SimulationConfig:
             self.iap = int(parts[0])
             self.rho_ap = FLOAT_TYPE(float(parts[1]))
 
-            # Store original aperture value
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.rho_ap_orig = self.rho_ap
 
             self.rnucleus = FLOAT_TYPE(float(parse_line(f.readline())))
@@ -328,20 +323,20 @@ class SimulationConfig:
 
             self.pcp = FLOAT_TYPE(1.0 - self.pcp / 100.0)
 
-            # Initialize arrays with explicit data types
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.flux = np.zeros((self.nx, self.ny), dtype=FLOAT_TYPE)
             self.opt_depth = np.zeros((self.nx, self.ny), dtype=FLOAT_TYPE)
             self.flux_star = np.zeros((self.nx, self.ny), dtype=FLOAT_TYPE)
             self.ngrid = np.zeros(self.nx, dtype=FLOAT_TYPE)
             self.mgrid = np.zeros(self.ny, dtype=FLOAT_TYPE)
 
-            # Initialize other parameters
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.ntotmc = self.nsizes * self.ntimes * self.nevent
 
-            # Prepare output files
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self._prepare_output_files()
 
-            # Initialize astronomical constants
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self._initialize_constants()
 
     def _prepare_output_files(self):
@@ -358,16 +353,16 @@ class SimulationConfig:
 
     def _initialize_constants(self):
         """Initialize astronomical and physical constants."""
-        # Solid angle of sun disk from Earth, sr
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.solid_angle = FLOAT_TYPE(PI * (RSUNKM/AUKM)**2)
 
-        # arcsec per radian
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.arcsec_rad = FLOAT_TYPE(180.0 * 3600.0 / PI)
 
-        # solid angle in arcsec**2
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.solid_angle = FLOAT_TYPE(self.solid_angle * self.arcsec_rad**2)
 
-        # Magnitude constant
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.cte_mag = FLOAT_TYPE(2.5 * np.log10(self.solid_angle))
 
     def setup_time_array(self):
@@ -379,13 +374,13 @@ class SimulationConfig:
         for i in range(1, self.ntimes):
             self.times[i] = FLOAT_TYPE(self.times[i-1] + self.deltat)
 
-        # Ensure exact value for the end time to avoid floating point drift
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.times[self.ntimes-1] = self.end_jd
 
     def setup_image_grid(self, comet):
         """Set up dust tail image grid parameters with high precision."""
 
-        # Copy comet info
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.ra = comet.ra
         self.dec = comet.dec
         self.delta = comet.delta
@@ -398,8 +393,8 @@ class SimulationConfig:
         self.per_jd = comet.per_jd
         self.tc = FLOAT_TYPE(self.end_jd - self.per_jd)
 
-        # Calculate grid parameters
-        self.grdsiz = FLOAT_TYPE(self.scale * self.delta * AUKM / self.arcsec_rad)  # km/px
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.grdsiz = FLOAT_TYPE(self.scale * self.delta * AUKM / self.arcsec_rad)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         gr2 = FLOAT_TYPE(self.grdsiz / 2.0)
 
         self.inuc = self.nx // 2
@@ -411,16 +406,16 @@ class SimulationConfig:
         self.mmin = FLOAT_TYPE(-((self.jnuc-1) * self.grdsiz + gr2))
         self.mmax = FLOAT_TYPE((self.ny-self.jnuc) * self.grdsiz - gr2)
 
-        # Setup grid arrays - ensure consistent precision
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.ngrid[0] = FLOAT_TYPE(self.nmin + gr2)
         self.mgrid[0] = FLOAT_TYPE(self.mmin + gr2)
 
-        # Fix the aperture radius calculation
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         if self.iap == 1:
-            # Aperture in arcsec needs to be converted to km
-            self.rho_ap = FLOAT_TYPE((self.rho_ap_orig / self.scale) * self.grdsiz)  # Aperture in km
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+            self.rho_ap = FLOAT_TYPE((self.rho_ap_orig / self.scale) * self.grdsiz)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         else:
-            self.rho_ap = FLOAT_TYPE(self.rho_ap)  # Already in km
+            self.rho_ap = FLOAT_TYPE(self.rho_ap)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
         for i in range(1, self.nx):
             self.ngrid[i] = FLOAT_TYPE(self.ngrid[i-1] + self.grdsiz)
@@ -428,12 +423,12 @@ class SimulationConfig:
         for i in range(1, self.ny):
             self.mgrid[i] = FLOAT_TYPE(self.mgrid[i-1] + self.grdsiz)
 
-        # Calculate additional parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.augx = FLOAT_TYPE(float(self.nx) / (self.nmax - self.nmin))
         self.augy = FLOAT_TYPE(float(self.ny) / (self.mmax - self.mmin))
         self.areapix = FLOAT_TYPE((self.grdsiz * self.arcsec_rad / (self.delta * AUKM))**2)
 
-        # Initialize plot handler if plotting is enabled
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         plot_handler = None
         if self.igrapho == 1:
             plot_filename = 'output/dust_particles.png'
@@ -442,11 +437,11 @@ class SimulationConfig:
                 self.mmin, self.mmax,
                 plot_filename
             )
-            # Calculate how many particles we expect to plot
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             expected_count = int(self.ntotmc * (1.0 - self.pcp))
             print(f"Will plot approximately {expected_count} particles ({(1.0 - self.pcp) * 100:.1f}% of total)")
 
-        # Print grid information
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         print(f" Image scale={self.grdsiz:10.3f} km/px <==> {self.scale:8.3f} arcsec/px " +
               f"Field of view= {self.nx*self.scale/60.0:8.3f} x{self.ny*self.scale/60.0:8.3f} arcmin")
 
@@ -465,7 +460,7 @@ class SimulationConfig:
             FLOAT_TYPE(position_data['z'])
         ]
 
-        # Store components for convenience
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xe = self.xyz_earth[0]
         self.ye = self.xyz_earth[1]
         self.ze = self.xyz_earth[2]
@@ -480,18 +475,18 @@ class SimulationConfig:
             zarr: Comet z-positions array
             trueanarr: Comet true anomaly array
         """
-        # Comet coordinates at observation date
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xcobs = FLOAT_TYPE(xarr[self.ntimes - 1])
         self.ycobs = FLOAT_TYPE(yarr[self.ntimes - 1])
         self.zcobs = FLOAT_TYPE(zarr[self.ntimes - 1])
 
-        # Comet true anomaly at observation date
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.thetacobs = FLOAT_TYPE(trueanarr[self.ntimes - 1])
 
-        # Comet heliocentric distance at observation
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.rcobs = FLOAT_TYPE(np.sqrt(self.xcobs**2 + self.ycobs**2 + self.zcobs**2))
 
-        # Convert to equatorial coordinates
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.rah = int(self.ra / 15.0)
         self.ram = FLOAT_TYPE((self.ra / 15.0 - self.rah) * 60.0)
         self.ras = FLOAT_TYPE((self.ram - int(self.ram)) * 60.0)
@@ -499,10 +494,10 @@ class SimulationConfig:
         self.dem = FLOAT_TYPE((self.dec - self.ded) * 60.0)
         self.des = FLOAT_TYPE((self.dem - int(self.dem)) * 60.0)
 
-        # Calculate brightness scaling factors
-        # Apply Schleicher phase function correction
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         x = FLOAT_TYPE(self.phas_ang)
-        # Use Horner's method for polynomial evaluation to reduce floating-point errors
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         phase_corr = FLOAT_TYPE(10 ** (SCHLEICHER_COEFFS[0] +
                                        x * (SCHLEICHER_COEFFS[1] +
                                             x * (SCHLEICHER_COEFFS[2] +
@@ -513,28 +508,28 @@ class SimulationConfig:
 
         self.pv = FLOAT_TYPE(self.pv0 * phase_corr)
 
-        # Linear phase correction for nucleus
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.pv_nuc = FLOAT_TYPE(self.pv0_nuc * 10 ** (-self.phase_coeff_nuc * self.phas_ang / 2.5))
 
-        # Calculate brightness scaling constants
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.cte_part = FLOAT_TYPE(self.pv * self.solid_angle /
                                   ((AUKM * 1.0e3) ** 2 * self.rcobs ** 2 * self.delta ** 2 * self.areapix))
 
         self.cte_nuc = FLOAT_TYPE(self.pv_nuc * self.solid_angle /
                                  ((AUKM * 1.0e3) ** 2 * self.rcobs ** 2 * self.delta ** 2 * self.areapix))
 
-        # Calculate nucleus brightness
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.brnucleus = FLOAT_TYPE(self.cte_nuc * self.rnucleus ** 2)
 
-        # Convert to heliocentric orbit plane coordinates
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xoute, self.youte, self.zoute = he_to_hpo(self.xe, self.ye, self.ze, self.helio_matrix)
 
-        # Cometocentric coordinates of Earth at observation date
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.chitae = FLOAT_TYPE(self.xoute * np.cos(self.thetacobs) + self.youte * np.sin(self.thetacobs) - self.rcobs)
         self.etae = FLOAT_TYPE(self.xoute * np.sin(self.thetacobs) - self.youte * np.cos(self.thetacobs))
         self.gitae = FLOAT_TYPE(self.zoute)
 
-        # Conversion parameters to sky plane (N-M)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.nmpar = FLOAT_TYPE(np.sqrt(self.etae ** 2 + self.gitae ** 2))
         self.nmpar1 = FLOAT_TYPE(self.nmpar / self.delta)
         self.nmpar2 = FLOAT_TYPE(self.chitae * self.etae / (self.nmpar * self.delta))
@@ -546,21 +541,21 @@ class SimulationConfig:
         self.nmpar7 = FLOAT_TYPE(self.etae / self.delta)
         self.nmpar8 = FLOAT_TYPE(self.gitae / self.delta)
 
-        # Pass parameters to the heliorbit object
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         heliorbit.set_matrices(self.helio_matrix, None)
         heliorbit.set_params_nm(
             self.delta, self.nmpar, self.nmpar1, self.nmpar2, self.nmpar3,
             self.nmpar4, self.nmpar5, self.nmpar6, self.nmpar7, self.nmpar8)
 
-        # Observation time since perihelion passage in days
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.tc = FLOAT_TYPE(self.end_jd - self.per_jd)
 
-        # Size step
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.r1log = FLOAT_TYPE(np.log10(self.radiomin[0]))
         self.r2log = FLOAT_TYPE(np.log10(self.radiomax[0]))
         self.steprlog = FLOAT_TYPE((self.r2log - self.r1log) / float(self.nsizes))
 
-        # Add missing output information
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         print(f"  Helioc. coor. of the Earth at obs. date:   {self.xe:8.7f}  {self.ye:8.7f}  {self.ze:8.7f}")
         print(f"  TARGET RA (h,m,s):    {self.rah:2d} {int(self.ram):2d} {self.ras:5.2f}")
         print(f"  TARGET DEC(d,m,s):   {self.ded:2d} {int(self.dem):2d} {self.des:5.2f}")

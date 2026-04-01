@@ -1,6 +1,9 @@
+.*
 __pycache__
 myvenv
 /output/*
 
 # Native core build outputs
 comtails_core/build/
+output_cpp
+output_png

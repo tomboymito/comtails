@@ -75,6 +75,12 @@ python benchmarks/stage1_profile.py
 ./scripts/run_cpp_pipeline.sh
 ```
 
+Построение PNG-графиков из CSV-результатов:
+
+```bash
+python scripts/plot_results_ru.py
+```
+
 ## Авторы и вклад
 
 - `docs/AUTHORS_RU.md`

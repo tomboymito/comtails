@@ -53,3 +53,28 @@ ctest --test-dir comtails_core/build --output-on-failure
 
 - `output_cpp/flux.csv` — фотометрическая карта распределения потока пылевого хвоста;
 - `output_cpp/opt_depth.csv` — карта оптической толщины в плоскости неба.
+
+
+## Как получить PNG-графики из CSV
+
+После C++ расчёта выполните:
+
+```bash
+python scripts/plot_results_ru.py
+```
+
+Будут созданы:
+- `output_png/flux_map.png`
+- `output_png/opt_depth_map.png`
+- `output_png/parity_timing.png`
+
+## Как просматривать CSV
+
+Варианты:
+1. В текстовом/табличном виде:
+   - VS Code (встроенный просмотр CSV),
+   - LibreOffice Calc / Excel.
+2. В виде изображений (тепловые карты):
+   - через `python scripts/plot_results_ru.py`.
+3. В Jupyter Notebook:
+   - `pandas.read_csv(...)` + `matplotlib`/`seaborn` для интерактивной визуализации.

@@ -19,11 +19,11 @@ ok "Обновление parity dataset"
 ok "Parity benchmark + regression check пройдены"
 
 ok "Синтаксическая проверка Python-модулей"
-python -m py_compile benchmarks/stage1_profile.py main.py simulation.py models/dust_tail.py
+python3 -m py_compile benchmarks/stage1_profile.py main.py simulation.py models/dust_tail.py
 ok "Python py_compile пройден"
 
 ok "Проверка доступности зависимостей Python runtime"
-python - <<'PY'
+python3 - <<'PY'
 import importlib
 mods = ["numpy", "astropy", "requests", "pygame"]
 missing = []
@@ -38,7 +38,7 @@ else:
     print("MISSING:")
 PY
 
-MISSING_LINE=$(python - <<'PY'
+MISSING_LINE=$(python3 - <<'PY'
 import importlib
 mods=["numpy","astropy","requests","pygame"]
 missing=[]

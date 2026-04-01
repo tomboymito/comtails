@@ -1,9 +1,4 @@
-"""
-Heliocentric orbit calculation module for COMTAILS simulation.
-
-This module provides classes for heliocentric orbit calculations and
-coordinate transformations for dust particles.
-"""
+"""Гелиоцентрическая орбитальная динамика пылевых частиц и преобразования координат."""
 import numpy as np
 
 from constants import FLOAT_TYPE, TWOPI, MU, AUKM
@@ -48,7 +43,7 @@ class HelioOrbit:
             wd: Argument of perihelion
             nd: Longitude of ascending node
         """
-        # Convert inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         qd = FLOAT_TYPE(qd)
         ed = FLOAT_TYPE(ed)
         ind = FLOAT_TYPE(ind)
@@ -65,7 +60,7 @@ class HelioOrbit:
             delta: Distance to observer
             nmpar, nmpar1, ...: Sky plane transformation parameters
         """
-        # Convert all parameters to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         delta = FLOAT_TYPE(delta)
         nmpar = FLOAT_TYPE(nmpar)
         nmpar1 = FLOAT_TYPE(nmpar1)
@@ -103,7 +98,7 @@ class HelioOrbit:
         Returns:
             tuple: (npar, mpar, lpar) Sky plane coordinates in km
         """
-        # Convert all inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         per_jd = FLOAT_TYPE(per_jd)
         tc = FLOAT_TYPE(tc)
         tau = FLOAT_TYPE(tau)
@@ -125,14 +120,14 @@ class HelioOrbit:
         vy = FLOAT_TYPE(vy)
         vz = FLOAT_TYPE(vz)
 
-        # Time of ejection
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         tiem0 = FLOAT_TYPE(tc - tau + per_jd)
 
-        # Parameters for radiation pressure
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         umu = FLOAT_TYPE(1.191e-3 * qp / (2.0 * pden * rad))
-        gm = FLOAT_TYPE((1.0 - umu) * MU)  # Reduced mu*GM
+        gm = FLOAT_TYPE((1.0 - umu) * MU)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
-        # Heliocentric ecliptic position and velocity of particle
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         xoutp = FLOAT_TYPE(x + xc_ejec)
         youtp = FLOAT_TYPE(y + yc_ejec)
         zoutp = FLOAT_TYPE(z + zc_ejec)
@@ -141,23 +136,23 @@ class HelioOrbit:
         vyoutp = FLOAT_TYPE(vy + vyc_ejec)
         vzoutp = FLOAT_TYPE(vz + vzc_ejec)
 
-        # Calculate orbital elements
-        if umu > 1.0:  # Repulsive hyperbola
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        if umu > 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             qd, ed, ind, nd, wd, ad, thetad, ene, t0d = \
                 self.he_to_orbital_elements_r(-gm, tiem0, xoutp, youtp, zoutp,
                                             vxoutp, vyoutp, vzoutp)
-        else:  # Elliptic or attractive hyperbola
+        else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             qd, ed, ind, nd, wd, ad, thetad, ene, t0d = \
                 self.he_to_orbital_elements(umu, gm, tiem0, xoutp, youtp, zoutp,
                                           vxoutp, vyoutp, vzoutp)
 
-        # Set orbital elements for later use
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.set_orbital_elements(qd, ed, ind, wd, nd)
 
-        # Compute sky plane coordinates
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         npar, mpar, lpar = self.nm(gm, tiem0, tc, tau, rc_obs, thetac_obs, thetad, t0d, umu, ad)
 
-        # Convert to km
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         npar = FLOAT_TYPE(npar * AUKM)
         mpar = FLOAT_TYPE(mpar * AUKM)
         lpar = FLOAT_TYPE(lpar * AUKM)
@@ -178,7 +173,7 @@ class HelioOrbit:
         Returns:
             tuple: Orbital elements (q, e, i, om, w, a, anom, ene, t0d)
         """
-        # Convert all inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         umu = FLOAT_TYPE(umu)
         gm = FLOAT_TYPE(gm)
         tiem0 = FLOAT_TYPE(tiem0)
@@ -189,7 +184,7 @@ class HelioOrbit:
         vy = FLOAT_TYPE(vy)
         vz = FLOAT_TYPE(vz)
 
-        # Angular momentum vector using vectorial product
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         from utils.coordinate_transforms import vectorial
         hx, hy, hz = vectorial(x, y, z, vx, vy, vz)
 
@@ -201,57 +196,57 @@ class HelioOrbit:
         v = np.sqrt(v2, dtype=FLOAT_TYPE)
         rv = FLOAT_TYPE(x*vx + y*vy + z*vz)
 
-        # Semi-major axis from vis viva equation
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         a = FLOAT_TYPE(1.0 / (2.0/r - v2/gm))
 
-        # Eccentricity
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         e = np.sqrt(1.0 - h2/(gm*a), dtype=FLOAT_TYPE)
 
-        # Perihelion distance
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         if e != 1.0:
             q = FLOAT_TYPE(a * (1.0 - e))
         else:
-            # Parabolic case (rare)
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             q = FLOAT_TYPE(h2 / (2.0 * gm))
 
-        # Node
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         om = np.arctan2(hx, -hy, dtype=FLOAT_TYPE)
         if om < 0.0:
             om = FLOAT_TYPE(om + TWOPI)
 
-        # Inclination
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         cosi = FLOAT_TYPE(hz / h)
         sini = FLOAT_TYPE((hx / h) / np.sin(om, dtype=FLOAT_TYPE))
         i = np.arctan2(sini, cosi, dtype=FLOAT_TYPE)
 
-        # Argument of perihelion and true anomaly
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         u = np.arctan2(z/sini, x*np.cos(om, dtype=FLOAT_TYPE) + y*np.sin(om, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE)
         rdot = FLOAT_TYPE((x*vx + y*vy + z*vz) / r)
 
-        # True anomaly
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         anom = np.arctan2(h*rdot/gm, h2/(r*gm) - 1.0, dtype=FLOAT_TYPE)
 
-        # Argument of perihelion
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         w = FLOAT_TYPE(u - anom)
         if w < 0.0:
             w = FLOAT_TYPE(w + TWOPI)
         if w > TWOPI:
             w = FLOAT_TYPE(w % TWOPI)
 
-        # Calculate time of perihelion passage
-        if e < 1.0 and umu < 1.0:  # Elliptic trajectory
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        if e < 1.0 and umu < 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             ene = np.sqrt(gm / a**3, dtype=FLOAT_TYPE)
             temp1 = np.sqrt((1.0 + e) / (1.0 - e), dtype=FLOAT_TYPE)
             temp2 = FLOAT_TYPE(2.0 * np.arctan(
-                (1.0 / temp1) * np.tan(anom / 2.0, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE))  # Eccentric anomaly
+                (1.0 / temp1) * np.tan(anom / 2.0, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE))   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             t0d = FLOAT_TYPE(tiem0 - (1.0 / ene) * (temp2 - e * np.sin(temp2, dtype=FLOAT_TYPE)))
-        elif e > 1.0:  # Hyperbolic (attractive)
+        elif e > 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             temp1 = FLOAT_TYPE((e - 1.0) / (e + 1.0))
             temp2 = FLOAT_TYPE(np.sqrt(temp1, dtype=FLOAT_TYPE) * np.tan(anom / 2.0, dtype=FLOAT_TYPE))
             temp1 = FLOAT_TYPE(2.0 * np.arctanh(temp2))
             ene = np.sqrt(-gm / a**3, dtype=FLOAT_TYPE)
             t0d = FLOAT_TYPE(tiem0 - (1.0 / ene) * (e * np.sinh(temp1, dtype=FLOAT_TYPE) - temp1))
-        else:  # Parabolic (very rare)
+        else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             zz = np.tan(anom / 2.0, dtype=FLOAT_TYPE)
             ene = np.sqrt(gm / (2.0 * q**3), dtype=FLOAT_TYPE)
             t0d = FLOAT_TYPE(tiem0 - (1.0 / ene) * (zz + zz**3 / 3.0))
@@ -271,7 +266,7 @@ class HelioOrbit:
         Returns:
             tuple: Orbital elements (q, e, i, om, w, a, anom, ene, t0d)
         """
-        # Convert all inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         gm = FLOAT_TYPE(gm)
         tiem0 = FLOAT_TYPE(tiem0)
         x = FLOAT_TYPE(x)
@@ -281,7 +276,7 @@ class HelioOrbit:
         vy = FLOAT_TYPE(vy)
         vz = FLOAT_TYPE(vz)
 
-        # Angular momentum vector using vectorial product
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         from utils.coordinate_transforms import vectorial
         hx, hy, hz = vectorial(x, y, z, vx, vy, vz)
 
@@ -292,46 +287,46 @@ class HelioOrbit:
         v2 = FLOAT_TYPE(vx*vx + vy*vy + vz*vz)
         v = np.sqrt(v2, dtype=FLOAT_TYPE)
 
-        # Semi-major axis from vis viva equation (repulsive case)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         a = FLOAT_TYPE(1.0 / (v**2/gm + 2.0/r))
         a = FLOAT_TYPE(-abs(a))
 
-        # Eccentricity
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         e = np.sqrt(1.0 - h2/(gm*a), dtype=FLOAT_TYPE)
 
-        # Perihelion distance (for repulsive hyperbola)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         q = FLOAT_TYPE(abs(a) * (1.0 + e))
 
-        # Node
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         om = np.arctan2(hx, -hy, dtype=FLOAT_TYPE)
         if om < 0.0:
             om = FLOAT_TYPE(om + TWOPI)
 
-        # Inclination
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         cosi = FLOAT_TYPE(hz / h)
         sini = FLOAT_TYPE((hx / h) / np.sin(om, dtype=FLOAT_TYPE))
         i = np.arctan2(sini, cosi, dtype=FLOAT_TYPE)
 
-        # Argument of perihelion and true anomaly
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         u = np.arctan2(z/sini, x*np.cos(om, dtype=FLOAT_TYPE) + y*np.sin(om, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE)
         rdot = FLOAT_TYPE((x*vx + y*vy + z*vz) / r)
 
-        # True anomaly (repulsive case)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         anom = np.arctan2(h*rdot/gm, h2/(r*gm) + 1.0, dtype=FLOAT_TYPE)
 
-        # Argument of perihelion
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         w = FLOAT_TYPE(u - anom)
         if w < 0.0:
             w = FLOAT_TYPE(w + TWOPI)
         if w > TWOPI:
             w = FLOAT_TYPE(w % TWOPI)
 
-        # Eccentric anomaly for repulsive hyperbola
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         f = FLOAT_TYPE(2.0 * np.arctanh(
             np.tan(anom/2.0, dtype=FLOAT_TYPE) * np.sqrt((e+1.0)/(e-1.0), dtype=FLOAT_TYPE)))
         ene = np.sqrt(abs(gm)/abs(a)**3, dtype=FLOAT_TYPE)
 
-        # Time of perihelion passage
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         t0d = FLOAT_TYPE(tiem0 - (e*np.sinh(f, dtype=FLOAT_TYPE) + f) / ene)
 
         return q, e, i, om, w, a, anom, ene, t0d
@@ -385,7 +380,7 @@ class HelioOrbit:
         Returns:
             tuple: (npar, mpar, lpar) Sky plane coordinates
         """
-        # Convert inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         gm = FLOAT_TYPE(gm)
         tiem0 = FLOAT_TYPE(tiem0)
         tc = FLOAT_TYPE(tc_in)
@@ -400,49 +395,49 @@ class HelioOrbit:
         qd, ed, ind, wd, nd = [FLOAT_TYPE(param) for param in self.orbital_elements_particle]
         delta, nmpar, nmpar1, nmpar2, nmpar3, nmpar4, nmpar5, nmpar6, nmpar7, nmpar8 = [FLOAT_TYPE(param) for param in self.params_nm]
 
-        # Calculate position based on orbital type
-        if ed < 1.0 and umu < 1.0:  # Elliptic trajectory
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        if ed < 1.0 and umu < 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             ene = np.sqrt(gm / ad**3, dtype=FLOAT_TYPE)
             eme = FLOAT_TYPE(ene * (tiem0 - t0dex + tau))
             eep = FLOAT_TYPE(ekepl2(eme, ed))
             thetad = FLOAT_TYPE(2.0 * np.arctan(np.sqrt((ed+1.0)/(1.0-ed), dtype=FLOAT_TYPE) * np.tan(eep/2.0, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE))
             rd = FLOAT_TYPE(ad * (1.0 - ed*ed) / (1.0 + ed*np.cos(thetad, dtype=FLOAT_TYPE)))
-        else:  # Hyperbolic trajectories
-            if (1.0 - umu) > 0.0:  # Attractive hyperbola
+        else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+            if (1.0 - umu) > 0.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
                 ene = np.sqrt(-gm / ad**3, dtype=FLOAT_TYPE)
                 eme = FLOAT_TYPE(ene * (tiem0 - t0dex + tau))
                 eep = FLOAT_TYPE(hkepler(eme, ed))
                 rd = FLOAT_TYPE(-ad * (ed*np.cosh(eep, dtype=FLOAT_TYPE) - 1.0))
                 thetad = FLOAT_TYPE(2.0 * np.arctan(np.sqrt((ed+1.0)/(ed-1.0), dtype=FLOAT_TYPE) * np.tanh(eep/2.0, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE))
-            else:  # Repulsive hyperbola
+            else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
                 ene = np.sqrt(gm / ad**3, dtype=FLOAT_TYPE)
                 eme = FLOAT_TYPE(ene * (tiem0 - t0dex + tau))
                 eep = FLOAT_TYPE(hkepler(-eme, -ed))
                 thetad = FLOAT_TYPE(2.0 * np.arctan(np.sqrt((ed-1.0)/(ed+1.0), dtype=FLOAT_TYPE) * np.tanh(eep/2.0, dtype=FLOAT_TYPE), dtype=FLOAT_TYPE))
                 rd = FLOAT_TYPE(abs(ad) * (ed*np.cosh(eep, dtype=FLOAT_TYPE) + 1.0))
 
-        # Particle position in orbital plane
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         xd = FLOAT_TYPE(rd * np.cos(thetad, dtype=FLOAT_TYPE))
         yd = FLOAT_TYPE(rd * np.sin(thetad, dtype=FLOAT_TYPE))
         zd = FLOAT_TYPE(0.0)
 
-        # Update particle transformation matrix
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.helio_matrix_particle = self.transform_matrix_particle()
 
-        # Convert to heliocentric ecliptic
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         xde, yde, zde = self._hpo_to_he_particle(xd, yd, zd)
 
-        # Convert to comet orbital plane
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         xout, yout, zout = he_to_hpo(xde, yde, zde, self.helio_matrix)
 
-        # Compute cometocentric coordinates
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         sint = np.sin(thetac, dtype=FLOAT_TYPE)
         cost = np.cos(thetac, dtype=FLOAT_TYPE)
         chita = FLOAT_TYPE(xout*cost + yout*sint - rc)
         eta = FLOAT_TYPE(xout*sint - yout*cost)
         gita = FLOAT_TYPE(zout)
 
-        # Convert to sky plane coordinates
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         mpar = FLOAT_TYPE(nmpar1*chita - nmpar2*eta - nmpar3*gita)
         npar = FLOAT_TYPE(nmpar4*eta - nmpar5*gita)
         lpar = FLOAT_TYPE(nmpar6*chita + nmpar7*eta + nmpar8*gita)
@@ -459,7 +454,7 @@ class HelioOrbit:
         Returns:
             tuple: (x_out, y_out, z_out) transformed coordinates
         """
-        # Convert inputs to float64
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         x_in = FLOAT_TYPE(x_in)
         y_in = FLOAT_TYPE(y_in)
         z_in = FLOAT_TYPE(z_in)

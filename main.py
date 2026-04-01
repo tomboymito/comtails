@@ -1,10 +1,4 @@
-"""
-Main entry point for COMTAILS simulation.
-
-This module provides the entry point for running the comet dust tail simulation.
-It uses the refactored object-oriented design to improve upon the original
-COMTAILS.for Fortran 77 code by Fernando Moreno IAA-CSIC.
-"""
+"""Точка входа COMTAILS для запуска астрофизической симуляции пылевого хвоста кометы."""
 import os
 import sys
 import argparse
@@ -47,10 +41,10 @@ def parse_arguments():
 
 def main():
     """Run the COMTAILS simulation."""
-    # Parse command line arguments
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     args = parse_arguments()
 
-    # Check for required input files
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     input_dir = args.input_dir
     required_files = [
         os.path.join(input_dir, args.config),
@@ -62,17 +56,17 @@ def main():
             print(f"Error: Required input file '{file}' not found.")
             sys.exit(1)
 
-    # Print version information
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     print_version_info()
 
-    # Create output directory
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     reset_directory(args.output_dir)
 
-    # Create and run simulation
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     simulation = SimulationController()
     simulation.run(required_files)
 
-    # Validate results if requested
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     if args.validate:
         validation_result = SimulationController.validate_results(
             os.path.join(args.output_dir, "afrho.dat"),
@@ -85,7 +79,7 @@ def main():
             print("Validation failed!")
             sys.exit(1)
 
-    # Print version information again
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     print_version_info()
     print_citation_info()
 

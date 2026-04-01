@@ -1,8 +1,4 @@
-"""
-Comet model for COMTAILS simulation.
-
-This module provides a class for representing a comet and its orbital properties.
-"""
+"""Модель ядра и орбитальных параметров кометы в гелиоцентрической системе координат."""
 import numpy as np
 from constants import FLOAT_TYPE, TORAD, TWOPI, MU
 from utils.date_time import caldate
@@ -24,40 +20,40 @@ class Comet:
         Args:
             config: SimulationConfig object containing configuration parameters
         """
-        # Basic identification
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.recid = config.recid
 
-        # Physical parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.rnucleus = config.rnucleus
         self.pv0_nuc = config.pv0_nuc
         self.phase_coeff_nuc = config.phase_coeff_nuc
         self.brnucleus = FLOAT_TYPE(0.0)
 
-        # Rotation parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.nuc_inc = config.nuc_inc
         self.nuc_phi = config.nuc_phi
         self.period = config.period
 
-        # Orbital elements - will be set later
-        self.ec = FLOAT_TYPE(0.5)  # eccentricity
-        self.qr = FLOAT_TYPE(1.0)  # perihelion distance (AU)
-        self.om = FLOAT_TYPE(0.0)  # longitude of ascending node (deg)
-        self.wper = FLOAT_TYPE(0.0)  # argument of perihelion (deg)
-        self.inc = FLOAT_TYPE(0.0)  # inclination (deg)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.ec = FLOAT_TYPE(0.5)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.qr = FLOAT_TYPE(1.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.om = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.wper = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.inc = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
         self.per_jd = FLOAT_TYPE(0.0)
 
-        # Orbit parameters in radians
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.om_rad = FLOAT_TYPE(0.0)
         self.wper_rad = FLOAT_TYPE(0.0)
         self.inc_rad = FLOAT_TYPE(0.0)
 
-        # Derived orbital parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.semiaxis = FLOAT_TYPE(0.0)
         self.orb_per = FLOAT_TYPE(0.0)
         self.half_per = FLOAT_TYPE(0.0)
 
-        # State vectors
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xarr = None
         self.yarr = None
         self.zarr = None
@@ -66,15 +62,15 @@ class Comet:
         self.vzarr = None
         self.trueanarr = None
 
-        # Observational parameters
-        self.ra = FLOAT_TYPE(0.0)  # Right ascension (deg)
-        self.dec = FLOAT_TYPE(0.0)  # Declination (deg)
-        self.delta = FLOAT_TYPE(1.0)  # Distance to observer (AU)
-        self.deldot = FLOAT_TYPE(0.0)  # Rate of change of distance
-        self.psang = FLOAT_TYPE(0.0)  # Position angle
-        self.psamv = FLOAT_TYPE(0.0)  # Position angle of heliocentric velocity
-        self.plang = FLOAT_TYPE(0.0)  # Phase angle of orbital plane
-        self.phas_ang = FLOAT_TYPE(0.0)  # Phase angle
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.ra = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.dec = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.delta = FLOAT_TYPE(1.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.deldot = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.psang = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.psamv = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.plang = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.phas_ang = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
     def set_orbital_elements(self, comet_data):
         """
@@ -83,7 +79,7 @@ class Comet:
         Args:
             comet_data: Dictionary containing orbital elements and other parameters
         """
-        # Orbital elements
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.ec = FLOAT_TYPE(comet_data.get('ec', 0.5))
         self.qr = FLOAT_TYPE(comet_data.get('qr', 1.0))
         self.om = FLOAT_TYPE(comet_data.get('om', 0.0))
@@ -92,12 +88,12 @@ class Comet:
 
         self.per_jd = FLOAT_TYPE(comet_data.get('per_jd', 0.0))
 
-        # Convert to radians
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.om_rad = FLOAT_TYPE(self.om * TORAD)
         self.wper_rad = FLOAT_TYPE(self.wper * TORAD)
         self.inc_rad = FLOAT_TYPE(self.inc * TORAD)
 
-        # Astrometric data
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.ra = FLOAT_TYPE(comet_data.get('ra', 0.0))
         self.dec = FLOAT_TYPE(comet_data.get('dec', 0.0))
         self.delta = FLOAT_TYPE(comet_data.get('delta', 1.0))
@@ -107,12 +103,12 @@ class Comet:
         self.plang = FLOAT_TYPE(comet_data.get('plang', 0.0))
         self.phas_ang = FLOAT_TYPE(comet_data.get('phas_ang', 0.0))
 
-        # Calculate derived orbital parameters
-        if self.ec < 1.0:  # Elliptical orbit
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        if self.ec < 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.semiaxis = FLOAT_TYPE(self.qr / (1.0 - self.ec))
             self.orb_per = FLOAT_TYPE(TWOPI * np.sqrt(self.semiaxis ** 3 / MU))
             self.half_per = FLOAT_TYPE(0.5 * self.orb_per)
-        else:  # Parabolic or hyperbolic orbit
+        else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.semiaxis = FLOAT_TYPE(self.qr / (self.ec - 1.0) if self.ec > 1.0 else 0.0)
             self.orb_per = FLOAT_TYPE(0.0)
             self.half_per = FLOAT_TYPE(0.0)
@@ -127,7 +123,7 @@ class Comet:
         """
         n_times = len(times)
 
-        # Initialize state vector arrays
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.xarr = np.zeros(n_times, dtype=FLOAT_TYPE)
         self.yarr = np.zeros(n_times, dtype=FLOAT_TYPE)
         self.zarr = np.zeros(n_times, dtype=FLOAT_TYPE)
@@ -136,7 +132,7 @@ class Comet:
         self.vzarr = np.zeros(n_times, dtype=FLOAT_TYPE)
         self.trueanarr = np.zeros(n_times, dtype=FLOAT_TYPE)
 
-        # Compute positions and velocities for all times
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         for i in range(n_times):
             x, y, z, vx, vy, vz, trueanomaly = elements_to_xv(
                 MU, times[i], self.qr, self.ec, self.per_jd, helio_matrix)

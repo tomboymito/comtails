@@ -1,12 +1,5 @@
-"""
-Version information for COMTAILS.
-
-This module provides version and build information that is used throughout
-the application to provide consistent version reporting.
-"""
-
-
-# Version information
+"""Версия и метаданные сборки COMTAILS."""
+# Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 VERSION = "1.0.0"
 VERSION_DATE = "2025 May 05"
 BUILD_INFO = f"COMTAILS - Comet Dust Tail Simulation v{VERSION} ({VERSION_DATE})"

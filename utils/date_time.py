@@ -1,8 +1,4 @@
-"""
-Date and time utilities for COMTAILS simulation.
-
-This module provides date/time conversion functions for astronomical calculations.
-"""
+"""Календарно-астрономические преобразования дат для временных шкал симуляции."""
 from constants import FLOAT_TYPE
 
 

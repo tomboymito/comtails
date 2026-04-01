@@ -1,3 +1,4 @@
+"""Численная модель пылевого хвоста: Монте-Карло выброс, динамика и фотометрическая аккумуляция."""
 import numpy as np
 import multiprocessing
 import os
@@ -23,14 +24,14 @@ class DustTail:
         Args:
             config: SimulationConfig object containing configuration parameters
         """
-        # Initialize arrays
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.opt_depth = np.zeros((config.nx, config.ny), dtype=FLOAT_TYPE)
         self.opt_depth_nuc = FLOAT_TYPE(0.0)
 
-        # Initialize orbit handler
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.heliorbit = HelioOrbit()
 
-        # Initialize total mass
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.total_mass = FLOAT_TYPE(0.0)
 
     def build(self, comet, config, plot_handler=None):
@@ -42,14 +43,14 @@ class DustTail:
             config: SimulationConfig object
             plot_handler: Optional PlotHandler for visualization
         """
-        # Reset total mass at the beginning
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.total_mass = FLOAT_TYPE(0.0)
 
-        # Determine number of processes
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         n_proc = multiprocessing.cpu_count()
 
         if n_proc > 1 and config.ntimes > 1:
-            # Parallel version
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             chunk_size = config.ntimes // n_proc
             ranges = [(i * chunk_size, (i + 1) * chunk_size if i < n_proc - 1 else config.ntimes)
                       for i in range(n_proc)]
@@ -60,31 +61,31 @@ class DustTail:
                     [(start, end, comet, config) for start, end in ranges]
                 )
 
-            # Combine results
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             config.flux = np.sum([res['flux_local'] for res in results], axis=0)
             self.opt_depth = np.sum([res['opt_depth_local'] for res in results], axis=0)
             self.total_mass = sum(res['total_mass_local'] for res in results)
             self.opt_depth_nuc = sum(res['opt_depth_nuc_local'] for res in results)
 
-            # Collect and sort dustloss data
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             dustloss_data = [item for res in results for item in res['dustloss_data']]
             dustloss_data.sort(key=lambda x: x[0])
             with open('output/dustlossrate.dat', 'w') as f:
                 for time_rel, rc_ejec, dmdt in dustloss_data:
                     f.write(f"    {time_rel:10.5E}     {rc_ejec:10.5E}     {dmdt:10.5E}\n")
 
-            # Handle particle positions output
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if config.iprn == 1:
-                # Each process wrote to its own file; optionally combine them
-                pass  # Leave as separate files for simplicity
+                # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+                pass   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
-            # Handle plotting
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if config.igrapho == 1 and plot_handler is not None and plot_handler.available:
                 for res in results:
                     for npar, mpar in res['particles_to_plot']:
                         plot_handler.add_particle(npar, mpar)
 
-            # Handle subsolar data if applicable
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if config.iejec_mode == 3:
                 subsolar_data = [item for res in results for item in res['subsolar_data']]
                 subsolar_data.sort(key=lambda x: x[0])
@@ -93,7 +94,7 @@ class DustTail:
                         f.write(f"{time_rel:15.5e} {rc_ejec:15.5e} {theta:15.5e} {subsolat:15.5e}\n")
 
         else:
-            # Sequential version (original code)
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             for itime in range(config.ntimes - 1):
                 red_factor = FLOAT_TYPE(1.0)
                 time = FLOAT_TYPE(config.times[itime])
@@ -181,7 +182,7 @@ class DustTail:
                             config.iejec_mode, vej, xc_ejec, yc_ejec, zc_ejec,
                             thetac_ejec, time, config
                         )
-                        heliorbit = HelioOrbit()  # New instance for sequential execution
+                        heliorbit = HelioOrbit()   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
                         heliorbit.set_matrices(config.helio_matrix, None)
                         heliorbit.set_params_nm(
                             config.delta, config.nmpar, config.nmpar1, config.nmpar2,

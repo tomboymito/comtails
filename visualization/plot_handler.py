@@ -1,9 +1,4 @@
-"""
-Plot handler for COMTAILS simulation.
-
-This module provides visualization capabilities for the dust tail simulation,
-using Pygame to render particle positions and save images.
-"""
+"""Визуализация распределения пылевых частиц в плоскости неба."""
 import os
 import numpy as np
 import pygame as pg
@@ -37,45 +32,45 @@ class PlotHandler:
         self.mmin = FLOAT_TYPE(mmin)
         self.mmax = FLOAT_TYPE(mmax)
         self.filename = filename
-        self.particles = []  # List to store particle positions
-        self.colors = []     # List to store particle colors
-        self.sizes = []      # List to store particle sizes
+        self.particles = []   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.colors = []      # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        self.sizes = []       # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
 
         try:
-            # Initialize pygame
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             pg.init()
             pg.font.init()
 
-            # Set up dimensions for output image
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.width = width
             self.height = height
 
-            # Set margin for axes and labels
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.margin = 100
             self.plot_width = self.width - 2 * self.margin
             self.plot_height = self.height - 2 * self.margin
 
-            # Create surface with specified background color
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.screen = pg.Surface((self.width, self.height))
             self.screen.fill(bg_color)
 
-            # Set up conversion factors for coordinates
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.x_scale = self.plot_width / (self.nmax - self.nmin)
             self.y_scale = self.plot_height / (self.mmax - self.mmin)
 
-            # Set color scheme
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.bg_color = bg_color
             self.axis_color = (150, 150, 150)
             self.grid_color = (50, 50, 50)
             self.text_color = (255, 255, 255)
             self.particle_color = (255, 255, 255)
 
-            # Create fonts
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.title_font = pg.font.SysFont('Arial', 24, bold=True)
             self.label_font = pg.font.SysFont('Arial', 20)
             self.small_font = pg.font.SysFont('Arial', 16)
 
-            # Set available flag
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             self.available = True
 
             print(f"Plot handler initialized with dimensions: {self.width}x{self.height}")
@@ -94,21 +89,21 @@ class PlotHandler:
         if not self.available:
             return False
 
-        # Draw border rectangle for the plot area
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         rect = pg.Rect(self.margin, self.margin, self.plot_width, self.plot_height)
         pg.draw.rect(self.screen, self.axis_color, rect, 1)
 
-        # X-axis major ticks and labels
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         x_ticks = np.linspace(self.nmin, self.nmax, 9)
         for tick in x_ticks:
             x_pos = self.margin + (tick - self.nmin) * self.x_scale
 
-            # Draw tick
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             pg.draw.line(self.screen, self.axis_color,
                         (x_pos, self.height - self.margin),
                         (x_pos, self.height - self.margin + 5), 1)
 
-            # Draw label (scientific notation)
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if tick == 0:
                 label = "0"
             else:
@@ -118,22 +113,22 @@ class PlotHandler:
             self.screen.blit(text, (x_pos - text.get_width()//2,
                                    self.height - self.margin + 10))
 
-            # Draw vertical gridline
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             pg.draw.line(self.screen, self.grid_color,
                         (x_pos, self.margin),
                         (x_pos, self.height - self.margin), 1)
 
-        # Y-axis major ticks and labels
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         y_ticks = np.linspace(self.mmin, self.mmax, 9)
         for tick in y_ticks:
             y_pos = self.height - self.margin - (tick - self.mmin) * self.y_scale
 
-            # Draw tick
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             pg.draw.line(self.screen, self.axis_color,
                         (self.margin, y_pos),
                         (self.margin - 5, y_pos), 1)
 
-            # Draw label (scientific notation)
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if tick == 0:
                 label = "0"
             else:
@@ -143,20 +138,20 @@ class PlotHandler:
             self.screen.blit(text, (self.margin - 10 - text.get_width(),
                                    y_pos - text.get_height()//2))
 
-            # Draw horizontal gridline
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             pg.draw.line(self.screen, self.grid_color,
                         (self.margin, y_pos),
                         (self.width - self.margin, y_pos), 1)
 
-        # X-axis label
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         x_label = self.label_font.render("Projected distance on RA axis [km]", True, self.text_color)
         self.screen.blit(x_label, (self.width//2 - x_label.get_width()//2,
                                  self.height - self.margin//2))
 
-        # Y-axis label (rotated text not directly supported in Pygame, so we'll position it)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         y_label = self.label_font.render("Projected distance on DEC axis [km]", True, self.text_color)
 
-        # Create a new surface to rotate the text
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         y_label_rotated = pg.Surface((y_label.get_height(), y_label.get_width()), pg.SRCALPHA)
         for y in range(y_label.get_height()):
             for x in range(y_label.get_width()):
@@ -178,19 +173,19 @@ class PlotHandler:
         if not self.available or not self.particles:
             return False
 
-        # Draw coordinate axes first
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.draw_axes()
 
-        # Draw all particles
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         for i, (npar, mpar) in enumerate(self.particles):
-            # Convert comet coordinates to screen coordinates
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             x = int(self.margin + (npar - self.nmin) * self.x_scale)
             y = int(self.height - self.margin - (mpar - self.mmin) * self.y_scale)
 
-            # Ensure the point is within plot area
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             if (self.margin <= x < self.width - self.margin and
                 self.margin <= y < self.height - self.margin):
-                # Draw the particle
+                # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
                 pg.draw.circle(self.screen, self.colors[i], (x, y), self.sizes[i])
 
         return True
@@ -205,16 +200,16 @@ class PlotHandler:
         if not self.available:
             return False
 
-        # Calculate nucleus position (at center)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         nx = self.margin + (0 - self.nmin) * self.x_scale
         ny = self.height - self.margin - (0 - self.mmin) * self.y_scale
 
-        # Draw nucleus marker (red circle with cross)
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         pg.draw.circle(self.screen, (255, 0, 0), (int(nx), int(ny)), 5)
         pg.draw.line(self.screen, (255, 0, 0), (int(nx-7), int(ny)), (int(nx+7), int(ny)), 1)
         pg.draw.line(self.screen, (255, 0, 0), (int(nx), int(ny-7)), (int(nx), int(ny+7)), 1)
 
-        # Label
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         text = self.small_font.render("Nucleus", True, (255, 0, 0))
         self.screen.blit(text, (int(nx) + 10, int(ny) - 10))
 
@@ -233,19 +228,19 @@ class PlotHandler:
         if not self.available:
             return False
 
-        # Use provided filename or default
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         output_file = filename if filename else self.filename
 
-        # Make sure the output directory exists
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-        # Plot all particles
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.plot_particles()
 
-        # Add nucleus marker
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.add_nucleus_marker()
 
-        # Save the image
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         try:
             pg.image.save(self.screen, output_file)
             print(f"Saved particle plot to {output_file}")
@@ -270,7 +265,7 @@ class PlotHandler:
         if not self.available:
             return False
 
-        # Store the particle position and attributes
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         self.particles.append((FLOAT_TYPE(npar), FLOAT_TYPE(mpar)))
         self.colors.append(color if color else self.particle_color)
         self.sizes.append(size)

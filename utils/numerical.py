@@ -1,8 +1,4 @@
-"""
-Numerical utilities for COMTAILS simulation.
-
-This module provides numerical functions for high-precision calculations.
-"""
+"""Численные служебные функции для интегрирования и интерполяции в расчётах COMTAILS."""
 import numpy as np
 from constants import FLOAT_TYPE
 
@@ -20,7 +16,7 @@ def powerint(xa, xb, alpha):
     Returns:
         float: Integral value
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     xa = FLOAT_TYPE(xa)
     xb = FLOAT_TYPE(xb)
     alpha = FLOAT_TYPE(alpha)

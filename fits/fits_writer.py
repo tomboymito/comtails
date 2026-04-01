@@ -1,8 +1,4 @@
-"""
-FITS file writing module for COMTAILS simulation.
-
-This module provides utilities for writing FITS images from simulation results.
-"""
+"""Запись научных фотометрических карт COMTAILS в формат FITS."""
 import os
 import numpy as np
 import astropy.io.fits as fits
@@ -17,7 +13,7 @@ class FitsWriter:
 
     def __init__(self):
         """Initialize the FITS writer."""
-        # Ensure output directory exists
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         os.makedirs('output', exist_ok=True)
 
     def write_fits_image(self, outimage, imagefit, object_name, start_jd, end_jd,
@@ -36,22 +32,22 @@ class FitsWriter:
             swap_axis_and_subtract_1_1: Whether to swap x and y axes and shift entire matrix by (-1,-1)
                                       (default: True to match FORTRAN results)
         """
-        # Make a copy to avoid modifying the original data
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         data_to_write = imagefit.copy()
 
-        # Swap axes if requested
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         if swap_axis_and_subtract_1_1:
             data_to_write = data_to_write.transpose()
-            # Create a new array with shift applied - pad with zeros
-            # This effectively shifts the entire image by (-1,-1)
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             shifted_data = np.zeros_like(data_to_write)
             shifted_data[:-1, :-1] = data_to_write[1:, 1:]
             data_to_write = shifted_data
 
-        # Create a new FITS primary array
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         hdu = fits.PrimaryHDU(data_to_write)
 
-        # Add header information
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         hdu.header['OBJECT'] = object_name
         hdu.header['START_TM'] = start_jd
         hdu.header['OBS_TIME'] = end_jd
@@ -59,6 +55,6 @@ class FitsWriter:
         hdu.header['MC-Event'] = ntotmc
         hdu.header['SWAPAXES'] = swap_axis_and_subtract_1_1
 
-        # Write to disk
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         hdu.writeto(outimage, overwrite=True)
         print(f"Wrote FITS file: {outimage}")

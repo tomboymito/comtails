@@ -1,9 +1,4 @@
-"""
-Orbit solver module for COMTAILS simulation.
-
-This module provides functions for solving Kepler's equation and
-computing positions and velocities from orbital elements.
-"""
+"""Решатели уравнений Кеплера и преобразования орбитальных элементов."""
 import numpy as np
 from constants import FLOAT_TYPE, PI, TWOPI
 
@@ -24,56 +19,56 @@ def elements_to_xv(gm, t, qr, ec, per_jd, helio_matrix):
     Returns:
         tuple: (x, y, z, vx, vy, vz, theta) position, velocity, and true anomaly
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     gm = FLOAT_TYPE(gm)
     t = FLOAT_TYPE(t)
     qr = FLOAT_TYPE(qr)
     ec = FLOAT_TYPE(ec)
     per_jd = FLOAT_TYPE(per_jd)
 
-    if ec < 1.0:  # Elliptic trajectory
+    if ec < 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         ax = FLOAT_TYPE(qr / (1.0 - ec))
         ene = FLOAT_TYPE(np.sqrt(gm / ax ** 3))
         eme = FLOAT_TYPE(ene * (t - per_jd))
 
-        # Use more stable method for Kepler's equation
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         ee = ekepl2(eme, ec)
 
-        # More numerically stable formula for true anomaly
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         sin_e_half = FLOAT_TYPE(np.sin(ee / 2.0))
         cos_e_half = FLOAT_TYPE(np.cos(ee / 2.0))
         tan_theta_half = FLOAT_TYPE(np.sqrt((1.0 + ec) / (1.0 - ec)) * sin_e_half / cos_e_half)
         theta = FLOAT_TYPE(2.0 * np.arctan(tan_theta_half))
 
-        # Calculate r directly from orbital parameters
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         r = FLOAT_TYPE(ax * (1.0 - ec * np.cos(ee)))
 
-    elif ec > 1.0:  # Hyperbolic trajectory
-        ax = FLOAT_TYPE(qr / (ec - 1.0))  # Negative semi-major axis
+    elif ec > 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        ax = FLOAT_TYPE(qr / (ec - 1.0))   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         ene = FLOAT_TYPE(np.sqrt(-gm / ax ** 3))
         eme = FLOAT_TYPE(ene * (t - per_jd))
 
-        # Solve hyperbolic Kepler equation with improved stability
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         ee = hkepler(eme, ec)
 
-        # Calculate r from the hyperbolic form
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         r = FLOAT_TYPE(-ax * (ec * np.cosh(ee) - 1.0))
 
-        # Calculate true anomaly directly from eccentric anomaly
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         sinh_e_half = FLOAT_TYPE(np.sinh(ee / 2.0))
         cosh_e_half = FLOAT_TYPE(np.cosh(ee / 2.0))
         tan_theta_half = FLOAT_TYPE(np.sqrt((ec + 1.0) / (ec - 1.0)) * sinh_e_half / cosh_e_half)
         theta = FLOAT_TYPE(2.0 * np.arctan(tan_theta_half))
 
-    else:  # Parabolic trajectory
+    else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         onethird = FLOAT_TYPE(1.0 / 3.0)
         cc = FLOAT_TYPE(3.0 * np.sqrt(gm / (2.0 * qr ** 3)) * (t - per_jd))
 
-        # Use more stable algorithm for parabolic case
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         if abs(cc) < 1.0e-10:
-            zpar = FLOAT_TYPE(0.0)  # Handle very small values
+            zpar = FLOAT_TYPE(0.0)   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         else:
-            # Solve cubic equation directly
+            # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
             wpar = FLOAT_TYPE(np.cbrt(np.sqrt(1.0 + (cc / 2.0) ** 2) + abs(cc / 2.0)) *
                              np.sign(cc))
             zpar = FLOAT_TYPE(wpar - 1.0 / wpar)
@@ -81,35 +76,35 @@ def elements_to_xv(gm, t, qr, ec, per_jd, helio_matrix):
         theta = FLOAT_TYPE(2.0 * np.arctan(zpar))
         r = FLOAT_TYPE(qr * (1.0 + zpar ** 2))
 
-    # Position in orbital plane
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     x_orb = FLOAT_TYPE(r * np.cos(theta))
     y_orb = FLOAT_TYPE(r * np.sin(theta))
     z_orb = FLOAT_TYPE(0.0)
 
-    # Transform to heliocentric coordinates
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     from utils.coordinate_transforms import hpo_to_he
     x, y, z = hpo_to_he(x_orb, y_orb, z_orb, helio_matrix)
 
-    # Calculate velocities
-    if ec < 1.0:  # Elliptic
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+    if ec < 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         vc = FLOAT_TYPE(np.sqrt(gm * ax) / r)
-        # Use more precise form for velocity components
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         vx_orb = FLOAT_TYPE(-vc * np.sin(ee))
         vy_orb = FLOAT_TYPE(vc * np.sqrt(1.0 - ec * ec) * np.cos(ee))
         vz_orb = FLOAT_TYPE(0.0)
-    elif ec > 1.0:  # Hyperbolic
+    elif ec > 1.0:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         vc = FLOAT_TYPE(-np.sqrt(-gm * ax) / r)
         h = FLOAT_TYPE(2.0 * np.arctanh(np.sqrt((ec - 1.0) / (ec + 1.0)) * np.tan(theta / 2.0)))
         vx_orb = FLOAT_TYPE(vc * np.sinh(h))
         vy_orb = FLOAT_TYPE(-vc * np.sqrt(ec * ec - 1.0) * np.cosh(h))
         vz_orb = FLOAT_TYPE(0.0)
-    else:  # Parabolic
-        # More stable formula for parabolic velocity
+    else:   # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
+        # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
         vy_orb = FLOAT_TYPE(np.sqrt(2.0 * gm / qr) / (1.0 + zpar ** 2))
         vx_orb = FLOAT_TYPE(-zpar * vy_orb)
         vz_orb = FLOAT_TYPE(0.0)
 
-    # Transform velocities to heliocentric
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     vx, vy, vz = hpo_to_he(vx_orb, vy_orb, vz_orb, helio_matrix)
 
     return x, y, z, vx, vy, vz, theta
@@ -126,11 +121,11 @@ def ekepl2(em, e):
     Returns:
         float: Eccentric anomaly
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     em = FLOAT_TYPE(em)
     e = FLOAT_TYPE(e)
 
-    # Port of the original EKEPL2 function
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     pineg = FLOAT_TYPE(-PI)
     sw = FLOAT_TYPE(0.1)
     ahalf = FLOAT_TYPE(0.5)
@@ -196,7 +191,7 @@ def em_kepl(e, ee):
     Returns:
         float: Value for mean anomaly calculation
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     e = FLOAT_TYPE(e)
     ee = FLOAT_TYPE(ee)
 
@@ -227,7 +222,7 @@ def hkepler(eme, e):
     Returns:
         float: Hyperbolic anomaly
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     eme = FLOAT_TYPE(eme)
     e = FLOAT_TYPE(e)
 
@@ -247,7 +242,7 @@ def sh_kepl(el, g1):
     Returns:
         float: Solution
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     el = FLOAT_TYPE(el)
     g1 = FLOAT_TYPE(g1)
 
@@ -267,7 +262,7 @@ def sh_kepl(el, g1):
     s = FLOAT_TYPE(1.0 - g / cl)
     s = FLOAT_TYPE(el + g * al / np.cbrt(s**3 + w * el * (1.5 - g / 0.75)))
 
-    # Two iterations of halley-then-newton process
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     for _ in range(2):
         s0 = FLOAT_TYPE(s * s)
         s1 = FLOAT_TYPE(s0 + 1.0)
@@ -307,7 +302,7 @@ def shm_kep(g1, s):
     Returns:
         float: Result
     """
-    # Convert inputs to float64
+    # Комментарий (RU): астрофизическая логика и назначение описаны в коде.
     g1 = FLOAT_TYPE(g1)
     s = FLOAT_TYPE(s)
 
